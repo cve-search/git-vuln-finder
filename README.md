@@ -1,6 +1,7 @@
 # git-vuln-finder
 
-Finding potential software vulnerabilities from git commit messages.
+Finding potential software vulnerabilities from git commit messages. The output format is a JSON with the associated commit which could contain a fix regarding
+a software vulnerability. The search is based on a set of regular expressions against the commit messages.
 
 # Requirements
 
@@ -22,6 +23,8 @@ optional arguments:
 
 More info: https://github.com/cve-search/git-vuln-finder
 ~~~
+
+## A sample partial output from Curl git repository
 
 ~~~bash
 python3 finder.py -r /home/adulau/git/curl | jq .
