@@ -20,6 +20,7 @@ parser = argparse.ArgumentParser(description = "Finding potential software vulne
 parser.add_argument("-v", help="increase output verbosity", action="store_true")
 parser.add_argument("-r", type=str, help="git repository to analyse")
 parser.add_argument("-o", type=str, help="Output format: [json]", default="json")
+parser.add_argument("-s", type=str, help="State of the commit found", default="under-review")
 args = parser.parse_args()
 
 vulnpatterns = re.compile("(?i)(denial of service |\bXX E\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
@@ -82,6 +83,7 @@ for branch in repo_heads_names:
                 potential_vulnerabilities[rcommit.hexsha]['branches'] = []
                 potential_vulnerabilities[rcommit.hexsha]['branches'].append(branch)
                 potential_vulnerabilities[rcommit.hexsha]['pattern-matches'] = ret['match']
+                potential_vulnerabilities[rcommit.hexsha]['state'] = args.s
                 found += 1
 
 print(json.dumps(potential_vulnerabilities))
