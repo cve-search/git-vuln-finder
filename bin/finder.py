@@ -22,7 +22,7 @@ parser.add_argument("-r", type=str, help="git repository to analyse")
 parser.add_argument("-o", type=str, help="Output format: [json]", default="json")
 args = parser.parse_args()
 
-vulnpatterns = re.compile("(?i)(denial.o f .service |\bXX E\b|remote.code.execution|\bopen.redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x − f rame − options|attack|cross.site |exploit|malicious|directory.  traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross − oriдin\b|unauthori[z|s]ed |in finite.loop)")
+vulnpatterns = re.compile("(?i)(denial of service |\bXX E\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
 
 if not args.r:
     parser.print_usage()
