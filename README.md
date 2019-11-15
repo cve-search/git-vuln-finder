@@ -1,7 +1,7 @@
 # git-vuln-finder
 
 Finding potential software vulnerabilities from git commit messages. The output format is a JSON with the associated commit which could contain a fix regarding
-a software vulnerability. The search is based on a set of regular expressions against the commit messages.
+a software vulnerability. The search is based on a set of regular expressions against the commit messages only.
 
 # Requirements
 
@@ -11,7 +11,7 @@ a software vulnerability. The search is based on a set of regular expressions ag
 # Usage
 
 ~~~bash
-usage: finder.py [-h] [-v] [-r R] [-o O]
+usage: finder.py [-h] [-v] [-r R] [-o O] [-s S] [-p P]
 
 Finding potential software vulnerabilities from git commit messages.
 
@@ -20,9 +20,18 @@ optional arguments:
   -v          increase output verbosity
   -r R        git repository to analyse
   -o O        Output format: [json]
-
-More info: https://github.com/cve-search/git-vuln-finder
+  -s S        State of the commit found
+  -p P        Matching pattern to use: [vulnpatterns, cryptopatterns,
+              cpatterns]
 ~~~
+
+# Patterns
+
+git-vuln-finder comes with 3 default patterns which can be selected to find the potential vulnerabilities described in the commit messages such as:
+
+- `vulnpatterns` is a generic vulnerability pattern especially targeting web application and generic security commit message. Based on an academic paper.
+- `cryptopatterns` is a vulnerability pattern for cryptographic errors mentioned in commit messages.
+- `cpatterns` is a set of standard vulnerability patterns see for C/C++-like languages.
 
 ## A sample partial output from Curl git repository
 
@@ -70,9 +79,11 @@ python3 finder.py -r /home/adulau/git/curl | jq .
 ...
 ~~~
 
-# License
+# License and author(s)
 
 This software is free software and licensed under the AGPL version 3.
+
+Copyright (c) 2019 Alexandre Dulaunoy - https://github.com/adulau/
 
 # References
 
