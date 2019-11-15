@@ -21,9 +21,24 @@ parser.add_argument("-v", help="increase output verbosity", action="store_true")
 parser.add_argument("-r", type=str, help="git repository to analyse")
 parser.add_argument("-o", type=str, help="Output format: [json]", default="json")
 parser.add_argument("-s", type=str, help="State of the commit found", default="under-review")
+parser.add_argument("-p", type=str, help="Matching pattern to use: [vulnpatterns, cryptopatterns, cpatterns]", default="vulnpatterns")
 args = parser.parse_args()
 
 vulnpatterns = re.compile("(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
+
+cryptopatterns = re.compile("(?i)(weak algorithm|weak cipher|weak entropy| weak crypto|lack of entropy)")
+
+cpatterns = re.compile("(?i)(double[-| ]free|buffer overflow|double free|race[-| ]condition)")
+
+if args.p == "vulnpatterns":
+    defaultpattern = vulnpatterns
+elif args.p == "cryptopatterns":
+    defaultpattern = cryptopatterns
+elif args.p == "cpatterns":
+    defaultpattern = cpatterns
+else:
+    parser.print_usage()
+    parser.exit()
 
 if not args.r:
     parser.print_usage()
@@ -36,8 +51,8 @@ found = 0
 potential_vulnerabilities = {}
 
 
-def find_vuln(commit):
-    m = vulnpatterns.search(commit.message)
+def find_vuln(commit, pattern=vulnpatterns):
+    m = pattern.search(commit.message)
     if m:
         if args.v:
             print("Match found: {}".format(m.group(0)), file=sys.stderr)
@@ -53,16 +68,16 @@ def find_vuln(commit):
         # print("Nothing match")
 
 
+
 repo_heads = repo.heads
 repo_heads_names = [h.name for h in repo_heads]
 print(repo_heads_names, file=sys.stderr)
-
 
 for branch in repo_heads_names:
     commits = list(repo.iter_commits(branch))
 
     for commit in commits:
-        ret = find_vuln(commit)
+        ret = find_vuln(commit, pattern=defaultpattern)
         if ret:
             #print("Vulnerability found: {}".format(ret))
             #print(ret.hexsha)
@@ -82,6 +97,7 @@ for branch in repo_heads_names:
                 potential_vulnerabilities[rcommit.hexsha]['committed_date'] = rcommit.committed_date
                 potential_vulnerabilities[rcommit.hexsha]['branches'] = []
                 potential_vulnerabilities[rcommit.hexsha]['branches'].append(branch)
+                potential_vulnerabilities[rcommit.hexsha]['pattern-selected'] = args.p
                 potential_vulnerabilities[rcommit.hexsha]['pattern-matches'] = ret['match']
                 potential_vulnerabilities[rcommit.hexsha]['state'] = args.s
                 found += 1
