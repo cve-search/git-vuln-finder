@@ -26,7 +26,7 @@ args = parser.parse_args()
 
 vulnpatterns = re.compile("(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
 
-cryptopatterns = re.compile("(?i)(weak algorithm|weak cipher|weak entropy| weak crypto|lack of entropy)")
+cryptopatterns = re.compile("(?i)(weak algorithm|weak cipher|weak entropy| weak crypto|lack of entropy|hardcoded cryptographic key| weak IV)")
 
 cpatterns = re.compile("(?i)(double[-| ]free|buffer overflow|double free|race[-| ]condition)")
 
