@@ -22,7 +22,10 @@ optional arguments:
   -o O        Output format: [json]
   -s S        State of the commit found
   -p P        Matching pattern to use: [vulnpatterns, cryptopatterns,
-              cpatterns]
+              cpatterns] - the pattern 'all' is used to match all the patterns
+              at once.
+
+More info: https://github.com/cve-search/git-vuln-finder
 ~~~
 
 # Patterns
@@ -55,7 +58,9 @@ python3 finder.py -r /home/adulau/git/curl | jq .
     "branches": [
       "master"
     ],
-    "pattern-matches": "hijack"
+    "pattern-selected": "(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)",
+    "pattern-matches": "hijack",
+    "state": "under-review"
   },
   "c2b3f264cb5210f82bdc84a3b89250a611b68dd3": {
     "message": "CONNECT_ONLY: don't close connection on GSS 401/407 reponses\n\nPreviously, connections were closed immediately before the user had a\nchance to extract the socket when the proxy required Negotiate\nauthentication.\n\nThis regression was brought in with the security fix in commit\n79b9d5f1a42578f\n\nCloses #655\n",
@@ -74,7 +79,9 @@ python3 finder.py -r /home/adulau/git/curl | jq .
     "branches": [
       "master"
     ],
-    "pattern-matches": "security "
+    "pattern-selected": "(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)",
+    "pattern-matches": "security ",
+    "state": "under-review"
   },
 ...
 ~~~
