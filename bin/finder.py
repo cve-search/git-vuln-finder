@@ -73,7 +73,7 @@ def find_vuln(commit, pattern=vulnpatterns):
 
 def summary(commit, branch, pattern):
     rcommit = commit
-
+    cve = extract_cve(rcommit.message)
     if rcommit.hexsha in potential_vulnerabilities:
        potential_vulnerabilities[rcommit.hexsha]['branches'].append(branch)
     else:
@@ -90,8 +90,21 @@ def summary(commit, branch, pattern):
         potential_vulnerabilities[rcommit.hexsha]['branches'].append(branch)
         potential_vulnerabilities[rcommit.hexsha]['pattern-selected'] = pattern.pattern
         potential_vulnerabilities[rcommit.hexsha]['pattern-matches'] = ret['match']
-        potential_vulnerabilities[rcommit.hexsha]['state'] = args.s
+        if cve: potential_vulnerabilities[rcommit.hexsha]['cve'] = cve
+        if cve:
+            potential_vulnerabilities[rcommit.hexsha]['state'] = "cve-assigned"
+        else:
+            potential_vulnerabilities[rcommit.hexsha]['state'] = args.s
+
     return rcommit.hexsha
+
+def extract_cve(commit):
+    cve_find = re.compile(r'CVE-[1-2]\d{1,4}-\d{1,7}', re.IGNORECASE)
+    m = cve_find.findall(commit)
+    if m:
+        return m
+    else:
+        return None
 
 repo_heads = repo.heads
 repo_heads_names = [h.name for h in repo_heads]
