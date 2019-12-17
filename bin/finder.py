@@ -27,7 +27,7 @@ args = parser.parse_args()
 
 vulnpatterns = re.compile("(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
 
-cryptopatterns = re.compile("(?i)(weak algorithm|weak cipher|weak entropy| weak crypto|lack of entropy|hardcoded cryptographic key| weak IV)")
+cryptopatterns = re.compile("(?i)(?P<c>crypto|cryptographic|cryptography|encipherement|encryption|ciphers|cipherAES|DES|3DES|cipher|GPG|PGP|OpenSSL|SSH|wireguard|VPN|CBC|ECB|CTR|key|private([\s-]?)key|public([\s-]?)key|size|length|strenght|generation|randomness|entropy|prng|rng)(?P<q>assessment|lack of|bad|vulnerable|missing|unproper|unsuitable|breakable|broken|replace|assessment|pen([\s-]?)test|pentest|penetration([\s-]?)test|report|vulnerablity|replace|fix|issue|fixes|add|remove|check)|.*(g<q>).*(g<c>)>*")
 
 cpatterns = re.compile("(?i)(double[-| ]free|buffer overflow|double free|race[-| ]condition)")
 
