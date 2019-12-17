@@ -1,11 +1,12 @@
 # git-vuln-finder
 
 Finding potential software vulnerabilities from git commit messages. The output format is a JSON with the associated commit which could contain a fix regarding
-a software vulnerability. The search is based on a set of regular expressions against the commit messages only.
+a software vulnerability. The search is based on a set of regular expressions against the commit messages only. If CVE IDs are present, those are added automatically
+in the output.
 
 # Requirements
 
-- Python 3
+- Python 3.6
 - GitPython
 
 # Usage
@@ -84,6 +85,45 @@ python3 finder.py -r /home/adulau/git/curl | jq .
     "state": "under-review"
   },
 ...
+~~~
+
+- Extracting CVE id(s) from git messages
+
+~~~json
+  "98d132cf6a879faf0147aa83ea0c07ff326260ed": {
+    "message": "Add a macro for testing assertion in both debug and production builds\n\nIf we have an assert then in a debug build we want an abort() to occur.\nIn a production build we wan
+t the function to return an error.\n\nThis introduces a new macro to assist with that. The idea is to replace\nexisting use of OPENSSL_assert() with this new macro. The problem with\nOPENSSL
+_assert() is that it aborts() on an assertion failure in both debug\nand production builds. It should never be a library's decision to abort a\nprocess (we don't get to decide when to kill t
+he life support machine or\nthe nuclear reactor control system). Additionally if an attacker can\ncause a reachable assert to be hit then this can be a source of DoS attacks\ne.g. see CVE-20
+17-3733, CVE-2015-0293, CVE-2011-4577 and CVE-2002-1568.\n\nReviewed-by: Tim Hudson <tjh@openssl.org>\n(Merged from https://github.com/openssl/openssl/pull/3496)",
+    "commit-id": "98d132cf6a879faf0147aa83ea0c07ff326260ed",
+    "summary": "Add a macro for testing assertion in both debug and production builds",
+    "stats": {
+      "insertions": 18,
+      "deletions": 0,
+      "lines": 18,
+      "files": 1
+    },
+    "author": "Matt Caswell",
+    "author-email": "matt@openssl.org",
+    "authored_date": 1495182637,
+    "committed_date": 1495457671,
+    "branches": [
+      "master"
+    ],
+    "pattern-selected": "(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |ex
+ploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)",
+    "pattern-matches": [
+      "attack"
+    ],
+    "cve": [
+      "CVE-2017-3733",
+      "CVE-2015-0293",
+      "CVE-2011-4577",
+      "CVE-2002-1568"
+    ],
+    "state": "cve-assigned"
+  }
 ~~~
 
 # License and author(s)
