@@ -66,7 +66,7 @@ def find_vuln(commit, pattern=vulnpatterns):
             print("---", file=sys.stderr)
         ret = {}
         ret['commit'] = commit
-        ret['match'] = m.group(1)
+        ret['match'] = m.groups()
         return ret
     else:
         return None
