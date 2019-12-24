@@ -8,11 +8,12 @@ in the output.
 
 - Python 3.6
 - GitPython
+- langdetect
 
 # Usage
 
 ~~~bash
-usage: finder.py [-h] [-v] [-r R] [-o O] [-s S] [-p P]
+usage: finder.py [-h] [-v] [-r R] [-o O] [-s S] [-p P] [-c] [-t]
 
 Finding potential software vulnerabilities from git commit messages.
 
@@ -25,6 +26,9 @@ optional arguments:
   -p P        Matching pattern to use: [vulnpatterns, cryptopatterns,
               cpatterns] - the pattern 'all' is used to match all the patterns
               at once.
+  -c          output only a list of the CVE pattern found in commit messages
+              (disable by default)
+  -t          Include tags matching a specific commit
 
 More info: https://github.com/cve-search/git-vuln-finder
 ~~~
@@ -42,8 +46,9 @@ git-vuln-finder comes with 3 default patterns which can be selected to find the 
 ~~~bash
 python3 finder.py -r /home/adulau/git/curl | jq .
 ...
-  "6df916d751e72fc9a1febc07bb59c4ddd886c043": {
+ "6df916d751e72fc9a1febc07bb59c4ddd886c043": {
     "message": "loadlibrary: Only load system DLLs from the system directory\n\nInspiration provided by: Daniel Stenberg and Ray Satiro\n\nBug: https://curl.haxx.se/docs/adv_20160530.html\n\nRef: Windows DLL hijacking with curl, CVE-2016-4802\n",
+    "language": "en",
     "commit-id": "6df916d751e72fc9a1febc07bb59c4ddd886c043",
     "summary": "loadlibrary: Only load system DLLs from the system directory",
     "stats": {
@@ -60,11 +65,20 @@ python3 finder.py -r /home/adulau/git/curl | jq .
       "master"
     ],
     "pattern-selected": "(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)",
-    "pattern-matches": "hijack",
-    "state": "under-review"
+    "pattern-matches": [
+      "hijack"
+    ],
+    "origin": "git@github.com:curl/curl.git",
+    "origin-github-api": "https://api.github.com/repos/curl/curl/commits/6df916d751e72fc9a1febc07bb59c4ddd886c043",
+    "tags": [],
+    "cve": [
+      "CVE-2016-4802"
+    ],
+    "state": "cve-assigned"
   },
   "c2b3f264cb5210f82bdc84a3b89250a611b68dd3": {
     "message": "CONNECT_ONLY: don't close connection on GSS 401/407 reponses\n\nPreviously, connections were closed immediately before the user had a\nchance to extract the socket when the proxy required Negotiate\nauthentication.\n\nThis regression was brought in with the security fix in commit\n79b9d5f1a42578f\n\nCloses #655\n",
+    "language": "en",
     "commit-id": "c2b3f264cb5210f82bdc84a3b89250a611b68dd3",
     "summary": "CONNECT_ONLY: don't close connection on GSS 401/407 reponses",
     "stats": {
@@ -81,7 +95,12 @@ python3 finder.py -r /home/adulau/git/curl | jq .
       "master"
     ],
     "pattern-selected": "(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)",
-    "pattern-matches": "security ",
+    "pattern-matches": [
+      "security "
+    ],
+    "origin": "git@github.com:curl/curl.git",
+    "origin-github-api": "https://api.github.com/repos/curl/curl/commits/c2b3f264cb5210f82bdc84a3b89250a611b68dd3",
+    "tags": [],
     "state": "under-review"
   },
 ...
@@ -131,6 +150,11 @@ ploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack
 This software is free software and licensed under the AGPL version 3.
 
 Copyright (c) 2019 Alexandre Dulaunoy - https://github.com/adulau/
+
+# Acknowledgment
+
+- Thanks to [Jean-Louis Huynen](https://github.com/gallypette) for the discussions about the crypto vulnerability pattern
+- Thanks to [Sebastien Tricaud](https://github.com/stricaud) for the discussions regarding native language and commit messages
 
 # References
 
