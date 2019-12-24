@@ -16,6 +16,7 @@ import json
 import sys
 import argparse
 import typing
+from langdetect import detect as langdetect
 
 parser = argparse.ArgumentParser(description = "Finding potential software vulnerabilities from git commit messages.", epilog = "More info: https://github.com/cve-search/git-vuln-finder")
 parser.add_argument("-v", help="increase output verbosity", action="store_true")
@@ -92,6 +93,7 @@ def summary(commit, branch, pattern, origin=None):
     else:
         potential_vulnerabilities[rcommit.hexsha] = {}
         potential_vulnerabilities[rcommit.hexsha]['message'] = rcommit.message
+        potential_vulnerabilities[rcommit.hexsha]['language'] = langdetect(rcommit.message)
         potential_vulnerabilities[rcommit.hexsha]['commit-id'] = rcommit.hexsha
         potential_vulnerabilities[rcommit.hexsha]['summary'] = rcommit.summary
         potential_vulnerabilities[rcommit.hexsha]['stats'] = rcommit.stats.total
