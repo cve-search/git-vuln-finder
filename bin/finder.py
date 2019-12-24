@@ -23,6 +23,7 @@ parser.add_argument("-r", type=str, help="git repository to analyse")
 parser.add_argument("-o", type=str, help="Output format: [json]", default="json")
 parser.add_argument("-s", type=str, help="State of the commit found", default="under-review")
 parser.add_argument("-p", type=str, help="Matching pattern to use: [vulnpatterns, cryptopatterns, cpatterns] - the pattern 'all' is used to match all the patterns at once.", default="vulnpatterns")
+parser.add_argument("-c", help="output only a list of the CVE pattern found in commit messages", action="store_true")
 args = parser.parse_args()
 
 vulnpatterns = re.compile("(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
@@ -55,7 +56,7 @@ else:
 
 found = 0
 potential_vulnerabilities = {}
-
+cve_found = set()
 
 def find_vuln(commit, pattern=vulnpatterns):
     m = pattern.search(commit.message)
@@ -74,6 +75,7 @@ def find_vuln(commit, pattern=vulnpatterns):
 def summary(commit, branch, pattern):
     rcommit = commit
     cve = extract_cve(rcommit.message)
+    # deduplication if similar commits on different branches
     if rcommit.hexsha in potential_vulnerabilities:
        potential_vulnerabilities[rcommit.hexsha]['branches'].append(branch)
     else:
@@ -102,6 +104,8 @@ def extract_cve(commit):
     cve_find = re.compile(r'CVE-[1-2]\d{1,4}-\d{1,7}', re.IGNORECASE)
     m = cve_find.findall(commit)
     if m:
+        for v in m:
+            cve_found.add(v)
         return m
     else:
         return None
@@ -118,11 +122,8 @@ for branch in repo_heads_names:
         if isinstance(defaultpattern, typing.Pattern):
             ret = find_vuln(commit, pattern=defaultpattern)
             if ret:
-                #print("Vulnerability found: {}".format(ret))
-                #print(ret.hexsha)
                 rcommit = ret['commit']
                 summary(rcommit, branch, defaultpattern)
-                # Deduplication of commits on different branches
                 found += 1
         elif isinstance(defaultpattern, list):
             for p in defaultpattern:
@@ -131,7 +132,10 @@ for branch in repo_heads_names:
                     rcommit = ret['commit']
                     summary(rcommit, branch, p)
                     found += 1
+if not args.c:
+    print(json.dumps(potential_vulnerabilities))
+elif args.c:
+    print(json.dumps(list(cve_found)))
 
-print(json.dumps(potential_vulnerabilities))
-
+print("{} CVE referenced found in commit(s)".format(len(list(cve_found))), file=sys.stderr)
 print("Total potential vulnerability found in {} commit(s)".format(found), file=sys.stderr)
