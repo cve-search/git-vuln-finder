@@ -25,6 +25,7 @@ parser.add_argument("-o", type=str, help="Output format: [json]", default="json"
 parser.add_argument("-s", type=str, help="State of the commit found", default="under-review")
 parser.add_argument("-p", type=str, help="Matching pattern to use: [vulnpatterns, cryptopatterns, cpatterns] - the pattern 'all' is used to match all the patterns at once.", default="vulnpatterns")
 parser.add_argument("-c", help="output only a list of the CVE pattern found in commit messages (disable by default)", action="store_true")
+parser.add_argument("-t", help="Include tags matching a specific commit", action="store_true")
 args = parser.parse_args()
 
 vulnpatterns = re.compile("(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
@@ -108,6 +109,10 @@ def summary(commit, branch, pattern, origin=None):
         potential_vulnerabilities[rcommit.hexsha]['origin'] = origin
         if origin_github_api:
             potential_vulnerabilities[commit.hexsha]['origin-github-api'] = origin_github_api
+        potential_vulnerabilities[rcommit.hexsha]['tags'] = []
+        if args.t:
+            if repo.commit(rcommit).hexsha in tagmap:
+                potential_vulnerabilities[rcommit.hexsha]['tags'] = tagmap[repo.commit(rcommit).hexsha]
         if cve: potential_vulnerabilities[rcommit.hexsha]['cve'] = cve
         if cve:
             potential_vulnerabilities[rcommit.hexsha]['state'] = "cve-assigned"
@@ -130,10 +135,13 @@ repo_heads = repo.heads
 repo_heads_names = [h.name for h in repo_heads]
 print(repo_heads_names, file=sys.stderr)
 origin = repo.remotes.origin.url
+if args.t:
+    tagmap = {}
+    for t in repo.tags:
+        tagmap.setdefault(repo.commit(t).hexsha, []).append(str(t))
 
 for branch in repo_heads_names:
     commits = list(repo.iter_commits(branch))
-
     defaultpattern
     for commit in commits:
         if isinstance(defaultpattern, typing.Pattern):
