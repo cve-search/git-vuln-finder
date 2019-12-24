@@ -23,7 +23,7 @@ parser.add_argument("-r", type=str, help="git repository to analyse")
 parser.add_argument("-o", type=str, help="Output format: [json]", default="json")
 parser.add_argument("-s", type=str, help="State of the commit found", default="under-review")
 parser.add_argument("-p", type=str, help="Matching pattern to use: [vulnpatterns, cryptopatterns, cpatterns] - the pattern 'all' is used to match all the patterns at once.", default="vulnpatterns")
-parser.add_argument("-c", help="output only a list of the CVE pattern found in commit messages", action="store_true")
+parser.add_argument("-c", help="output only a list of the CVE pattern found in commit messages (disable by default)", action="store_true")
 args = parser.parse_args()
 
 vulnpatterns = re.compile("(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
@@ -72,9 +72,20 @@ def find_vuln(commit, pattern=vulnpatterns):
     else:
         return None
 
-def summary(commit, branch, pattern):
+def summary(commit, branch, pattern, origin=None):
     rcommit = commit
     cve = extract_cve(rcommit.message)
+    if origin is not None:
+        origin = origin
+        if origin.find('github.com'):
+            origin_github_api = origin.split(':')[1]
+            (org_name, repo_name) = origin_github_api.split('/', 1)
+            if repo_name.find('.git$'):
+                repo_name = re.sub(r".git$","", repo_name)
+            origin_github_api = 'https://api.github.com/repos/{}/{}/commits/{}'.format(org_name, repo_name, rcommit.hexsha)
+
+    else:
+        origin = 'git origin unknown'
     # deduplication if similar commits on different branches
     if rcommit.hexsha in potential_vulnerabilities:
        potential_vulnerabilities[rcommit.hexsha]['branches'].append(branch)
@@ -92,6 +103,9 @@ def summary(commit, branch, pattern):
         potential_vulnerabilities[rcommit.hexsha]['branches'].append(branch)
         potential_vulnerabilities[rcommit.hexsha]['pattern-selected'] = pattern.pattern
         potential_vulnerabilities[rcommit.hexsha]['pattern-matches'] = ret['match']
+        potential_vulnerabilities[rcommit.hexsha]['origin'] = origin
+        if origin_github_api:
+            potential_vulnerabilities[commit.hexsha]['origin-github-api'] = origin_github_api
         if cve: potential_vulnerabilities[rcommit.hexsha]['cve'] = cve
         if cve:
             potential_vulnerabilities[rcommit.hexsha]['state'] = "cve-assigned"
@@ -113,6 +127,7 @@ def extract_cve(commit):
 repo_heads = repo.heads
 repo_heads_names = [h.name for h in repo_heads]
 print(repo_heads_names, file=sys.stderr)
+origin = repo.remotes.origin.url
 
 for branch in repo_heads_names:
     commits = list(repo.iter_commits(branch))
@@ -123,14 +138,14 @@ for branch in repo_heads_names:
             ret = find_vuln(commit, pattern=defaultpattern)
             if ret:
                 rcommit = ret['commit']
-                summary(rcommit, branch, defaultpattern)
+                summary(rcommit, branch, defaultpattern, origin=origin)
                 found += 1
         elif isinstance(defaultpattern, list):
             for p in defaultpattern:
                 ret = find_vuln(commit, pattern=p)
                 if ret:
                     rcommit = ret['commit']
-                    summary(rcommit, branch, p)
+                    summary(rcommit, branch, p, origin=origin)
                     found += 1
 if not args.c:
     print(json.dumps(potential_vulnerabilities))
