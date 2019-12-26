@@ -10,6 +10,7 @@
 # Copyright (c) 2019 Alexandre Dulaunoy - a@foo.be
 
 
+import os
 import re
 import git
 import json
@@ -17,6 +18,8 @@ import sys
 import argparse
 import typing
 from langdetect import detect as langdetect
+
+PATTERNS_PATH="../patterns"
 
 parser = argparse.ArgumentParser(description = "Finding potential software vulnerabilities from git commit messages.", epilog = "More info: https://github.com/cve-search/git-vuln-finder")
 parser.add_argument("-v", help="increase output verbosity", action="store_true")
@@ -28,14 +31,68 @@ parser.add_argument("-c", help="output only a list of the CVE pattern found in c
 parser.add_argument("-t", help="Include tags matching a specific commit", action="store_true")
 args = parser.parse_args()
 
-vulnpatterns = re.compile("(?i)(denial of service |\bXXE\b|remote code execution|\bopen redirect|OSVDB|\bvuln|\bCVE\b |\bXSS\b|\bReDoS\b|\bNVD\b|malicious|x−frame−options|attack|cross site |exploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack|session.fixation|hijack|\badvisory|\binsecure |security |\bcross−origin\b|unauthori[z|s]ed |infinite loop)")
 
-cryptopatterns = re.compile(".*(assessment|lack of|bad|vulnerable|missing|unproper|unsuitable|breakable|broken|weak|incorrect|replace|assessment|pen([\s-]?)test|pentest|penetration([\s-]?)test|report|vulnerablity|replace|fix|issue|fixes|add|remove|check){1,} (crypto|cryptographic|cryptography|encipherement|encryption|ciphers|cipher|AES|DES|3DES|cipher|GPG|PGP|OpenSSL|SSH|wireguard|VPN|CBC|ECB|CTR|key[.|,|\s]|private([\s-]?)key|public([\s-]?)key size|length|strenght|generation|randomness|entropy|prng|rng){1,}")
+def build_pattern(pattern_file):
+    fp = open(pattern_file, "r")
+    rex = ""
+    try:
+        prefix_fp = open(pattern_file + ".prefix", "r")
+        rex += prefix_fp.read()
+        prefix_fp.close()
+    except:
+        pass
+    
+    for line in fp.readlines():
+        rex += line.rstrip() + "|"
+    rex = rex[:-1] # We remove the extra '|
+    fp.close()
 
+    try:
+        suffix_fp = open(pattern_file + ".suffix", "r")
+        rex += suffix_fp.read()
+        suffix_fp.close()
+    except:
+        pass
+    
+    return rex
+    
+def get_patterns(patterns_path=PATTERNS_PATH):
+    patterns = {}
+    for root, dirs, files in os.walk(patterns_path):
+        path = root.split(os.sep)
+        for f in files:
+            if f.endswith(".prefix") or f.endswith(".suffix"):
+                continue
+            npath = root[len(patterns_path):].split(os.sep)
+            try:
+                npath.remove('')
+            except ValueError:
+                pass
 
+            lang = npath[0]
+            severity = npath[1]
+            pattern_category = f
+            
+            try: # FIXME: Is there a better way?
+                a = patterns[lang]
+            except KeyError:
+                patterns[lang] = {}
+            try:
+                a = patterns[lang][severity]
+            except KeyError:
+                patterns[lang][severity] = {}
+            try:
+                a = patterns[lang][severity][pattern_category]
+            except KeyError:
+                rex = build_pattern(root + os.sep + f)
+                patterns[lang][severity][pattern_category] = re.compile(rex)
 
+    return patterns
 
-cpatterns = re.compile("(?i)(double[-| ]free|buffer overflow|double free|race[-| ]condition)")
+patterns = get_patterns()
+vulnpatterns = patterns["en"]["medium"]["vuln"]
+cryptopatterns = patterns["en"]["medium"]["crypto"]
+cpatterns = patterns["en"]["medium"]["c"]
 
 if args.p == "vulnpatterns":
     defaultpattern = vulnpatterns
