@@ -37,9 +37,9 @@ More info: https://github.com/cve-search/git-vuln-finder
 
 git-vuln-finder comes with 3 default patterns which can be selected to find the potential vulnerabilities described in the commit messages such as:
 
-- `vulnpatterns` is a generic vulnerability pattern especially targeting web application and generic security commit message. Based on an academic paper.
-- `cryptopatterns` is a vulnerability pattern for cryptographic errors mentioned in commit messages.
-- `cpatterns` is a set of standard vulnerability patterns see for C/C++-like languages.
+- [`vulnpatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/vuln) is a generic vulnerability pattern especially targeting web application and generic security commit message. Based on an academic paper.
+- [`cryptopatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/crypto) is a vulnerability pattern for cryptographic errors mentioned in commit messages.
+- [`cpatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/c) is a set of standard vulnerability patterns see for C/C++-like languages.
 
 ## A sample partial output from Curl git repository
 
@@ -153,8 +153,13 @@ Copyright (c) 2019 Alexandre Dulaunoy - https://github.com/adulau/
 
 # Acknowledgment
 
-- Thanks to [Jean-Louis Huynen](https://github.com/gallypette) for the discussions about the crypto vulnerability pattern
-- Thanks to [Sebastien Tricaud](https://github.com/stricaud) for the discussions regarding native language and commit messages
+- Thanks to [Jean-Louis Huynen](https://github.com/gallypette) for the discussions about the crypto vulnerability patterns.
+- Thanks to [Sebastien Tricaud](https://github.com/stricaud) for the discussions regarding native language, commit messages and external patterns.
+
+# Contributing
+
+We welcome contributions for the software and especially additional vulnerability patterns. Every contributors will be added in the [AUTHORS file](./AUTHORS) and
+collectively own this open source software. The contributors acknowledge the [Developer Certificate of Origin](https://developercertificate.org/).
 
 # References
 
