@@ -7,7 +7,7 @@
 #
 # This software is part of cve-search.org
 #
-# Copyright (c) 2019 Alexandre Dulaunoy - a@foo.be
+# Copyright (c) 2019-2020 Alexandre Dulaunoy - a@foo.be
 
 
 import os
