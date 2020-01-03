@@ -10,7 +10,7 @@ added automatically in the output.
 
 # Requirements
 
-- jq (sudo apt install jq)
+- jq (``sudo apt install jq``)
 
 
 # Installation
@@ -22,6 +22,8 @@ $ poetry install git-vuln-finder
 $ poetry shell
 ~~~
 
+You can also use ``pip``.
+
 
 ## Use as a command line tool
 
@@ -29,6 +31,9 @@ $ poetry shell
 $ pipx install git-vuln-finder
 $ git-vuln-finder --help
 ~~~
+
+``pipx`` installs scripts (system wide available) provided by Python packages into
+separate virtualenvs to shield them from your system and each other.
 
 
 # Usage
@@ -170,7 +175,7 @@ ploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack
 
 This software is free software and licensed under the AGPL version 3.
 
-Copyright (c) 2019 Alexandre Dulaunoy - https://github.com/adulau/
+Copyright (c) 2019-2020 Alexandre Dulaunoy - https://github.com/adulau/
 
 # Acknowledgment
 
