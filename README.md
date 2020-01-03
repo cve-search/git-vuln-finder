@@ -22,6 +22,7 @@ $ poetry install git-vuln-finder
 $ poetry shell
 ~~~
 
+
 ## Use as a command line tool
 
 ~~~bash

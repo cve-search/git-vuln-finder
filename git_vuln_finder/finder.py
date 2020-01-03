@@ -12,10 +12,7 @@
 
 import os
 import re
-import git
-import json
 import sys
-import typing
 from langdetect import detect as langdetect
 
 

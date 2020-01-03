@@ -12,7 +12,7 @@ build
 
 # setuptools
 build/*
-git-vuln-finder.egg-info/*
+git_vuln_finder.egg-info/
 dist/*
 
 # tests
