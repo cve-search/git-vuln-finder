@@ -10,9 +10,7 @@ added automatically in the output.
 
 # Requirements
 
-- Python 3.6
-- GitPython
-- langdetect
+- jq (sudo apt install jq)
 
 
 # Installation
@@ -66,7 +64,7 @@ git-vuln-finder comes with 3 default patterns which can be selected to find the 
 ## A sample partial output from Curl git repository
 
 ~~~bash
-$ git-vuln-finder -r /home/adulau/git/curl | jq .
+$ git-vuln-finder -r ~/git/curl | jq .
 ...
  "6df916d751e72fc9a1febc07bb59c4ddd886c043": {
     "message": "loadlibrary: Only load system DLLs from the system directory\n\nInspiration provided by: Daniel Stenberg and Ray Satiro\n\nBug: https://curl.haxx.se/docs/adv_20160530.html\n\nRef: Windows DLL hijacking with curl, CVE-2016-4802\n",
