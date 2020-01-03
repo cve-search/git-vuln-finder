@@ -2,13 +2,35 @@
 
 ![git-vuln-finder logo](https://raw.githubusercontent.com/cve-search/git-vuln-finder/f22077452c37e110bff0564e1f7b34637dc726c3/doc/logos/git-vuln-finder-small.png)
 
-Finding potential software vulnerabilities from git commit messages. The output format is a JSON with the associated commit which could contain a fix regarding a software vulnerability. The search is based on a set of regular expressions against the commit messages only. If CVE IDs are present, those are added automatically in the output.
+Finding potential software vulnerabilities from git commit messages.
+The output format is a JSON with the associated commit which could contain a
+fix regarding a software vulnerability. The search is based on a set of regular
+expressions against the commit messages only. If CVE IDs are present, those are
+added automatically in the output.
 
 # Requirements
 
 - Python 3.6
 - GitPython
 - langdetect
+
+
+# Installation
+
+## Use in your Python software
+
+~~~bash
+$ poetry install git-vuln-finder
+$ poetry shell
+~~~
+
+## Use as a command line tool
+
+~~~bash
+$ pipx install git-vuln-finder
+$ finder --help
+~~~
+
 
 # Usage
 
@@ -166,5 +188,3 @@ collectively own this open source software. The contributors acknowledge the [De
 - [Notes](https://gist.github.com/adulau/dce5a6ca5c65017869bb01dfee576303#file-finding-vuln-git-commit-messages-md)
 - https://csce.ucmss.com/cr/books/2017/LFS/CSREA2017/ICA2077.pdf (mainly using CVE referenced in the commit message) - archive (http://archive.is/xep9o)
 - https://asankhaya.github.io/pdf/automated-identification-of-security-issues-from-commit-messages-and-bug-reports.pdf (2 main regexps)
-
-
