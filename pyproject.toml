@@ -42,7 +42,7 @@ include = [
 ]
 
 [tool.poetry.scripts]
-finder = "bin.finder:main"
+git-vuln-finder = "bin.finder:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"
