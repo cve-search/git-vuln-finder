@@ -78,10 +78,10 @@ def get_patterns(patterns_path=PATTERNS_PATH):
     return patterns
 
 
-def find_vuln(commit, pattern, versbose=False):
+def find_vuln(commit, pattern, verbose=False):
     m = pattern.search(commit.message)
     if m:
-        if versbose:
+        if verbose:
             print("Match found: {}".format(m.group(0)), file=sys.stderr)
             print(commit.message, file=sys.stderr)
             print("---", file=sys.stderr)

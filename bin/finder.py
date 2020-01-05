@@ -83,7 +83,7 @@ def main():
         defaultpattern
         for commit in commits:
             if isinstance(defaultpattern, typing.Pattern):
-                ret = find_vuln(commit, pattern=defaultpattern, versbose=args.v)
+                ret = find_vuln(commit, pattern=defaultpattern, verbose=args.v)
                 if ret:
                     rcommit = ret['commit']
                     _, potential_vulnerabilities = summary(rcommit,
@@ -97,7 +97,7 @@ def main():
                     found += 1
             elif isinstance(defaultpattern, list):
                 for p in defaultpattern:
-                    ret = find_vuln(commit, pattern=p, versbose=args.v)
+                    ret = find_vuln(commit, pattern=p, verbose=args.v)
                     if ret:
                         rcommit = ret['commit']
                         _, potential_vulnerabilities = summary(rcommit,
