@@ -24,6 +24,14 @@ $ poetry shell
 
 You can also use ``pip``.
 
+~~~python
+Python 3.8.0 (default, Dec 11 2019, 21:43:13)
+[GCC 9.2.1 20191008] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from git_vuln_finder import find
+>>> all_potential_vulnerabilities, all_cve_found, found = find("~/git/curl")
+~~~
+
 
 ## Use as a command line tool
 
