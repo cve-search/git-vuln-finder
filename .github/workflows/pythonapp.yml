@@ -29,8 +29,10 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Checkout curl for the tests
-      uses: curl/curl@curl-7_67_0
+      uses: actions/checkout@v2
       with:
+        repository: curl/curl
+        ref: curl-7_67_0
         path: test_repos/curl
 
     - name: Test with pytest
