@@ -14,7 +14,7 @@ import os
 import re
 
 
-PATTERNS_PATH="./git_vuln_finder/patterns"
+PATTERNS_PATH = "./git_vuln_finder/patterns"
 
 
 def build_pattern(pattern_file):
@@ -29,7 +29,7 @@ def build_pattern(pattern_file):
 
     for line in fp.readlines():
         rex += line.rstrip() + "|"
-    rex = rex[:-1] # We remove the extra '|
+    rex = rex[:-1]  # We remove the extra '|
     fp.close()
 
     try:
@@ -49,9 +49,9 @@ def get_patterns(patterns_path=PATTERNS_PATH):
         for f in files:
             if f.endswith(".prefix") or f.endswith(".suffix"):
                 continue
-            npath = root[len(patterns_path):].split(os.sep)
+            npath = root[len(patterns_path) :].split(os.sep)
             try:
-                npath.remove('')
+                npath.remove("")
             except ValueError:
                 pass
 
@@ -59,7 +59,7 @@ def get_patterns(patterns_path=PATTERNS_PATH):
             severity = npath[1]
             pattern_category = f
 
-            try: # FIXME: Is there a better way?
+            try:  # FIXME: Is there a better way?
                 a = patterns[lang]
             except KeyError:
                 patterns[lang] = {}

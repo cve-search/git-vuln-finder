@@ -1,4 +1,3 @@
-
 from git_vuln_finder.pattern import build_pattern
 from git_vuln_finder.pattern import get_patterns
 from git_vuln_finder.vulnerability import find_vuln

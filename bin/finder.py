@@ -16,33 +16,43 @@ import sys
 import argparse
 import typing
 
-from git_vuln_finder import (
-    get_patterns,
-    find_vuln,
-    summary
-)
+from git_vuln_finder import get_patterns, find_vuln, summary
 
 
 def main():
     """Point of entry for the script.
     """
     # Parsing arguments
-    parser = argparse.ArgumentParser(description = "Finding potential software vulnerabilities from git commit messages.", epilog = "More info: https://github.com/cve-search/git-vuln-finder")
+    parser = argparse.ArgumentParser(
+        description="Finding potential software vulnerabilities from git commit messages.",
+        epilog="More info: https://github.com/cve-search/git-vuln-finder",
+    )
     parser.add_argument("-v", help="increase output verbosity", action="store_true")
     parser.add_argument("-r", type=str, help="git repository to analyse")
     parser.add_argument("-o", type=str, help="Output format: [json]", default="json")
-    parser.add_argument("-s", type=str, help="State of the commit found", default="under-review")
-    parser.add_argument("-p", type=str, help="Matching pattern to use: [vulnpatterns, cryptopatterns, cpatterns] - the pattern 'all' is used to match all the patterns at once.", default="vulnpatterns")
-    parser.add_argument("-c", help="output only a list of the CVE pattern found in commit messages (disable by default)", action="store_true")
-    parser.add_argument("-t", help="Include tags matching a specific commit", action="store_true")
+    parser.add_argument(
+        "-s", type=str, help="State of the commit found", default="under-review"
+    )
+    parser.add_argument(
+        "-p",
+        type=str,
+        help="Matching pattern to use: [vulnpatterns, cryptopatterns, cpatterns] - the pattern 'all' is used to match all the patterns at once.",
+        default="vulnpatterns",
+    )
+    parser.add_argument(
+        "-c",
+        help="output only a list of the CVE pattern found in commit messages (disable by default)",
+        action="store_true",
+    )
+    parser.add_argument(
+        "-t", help="Include tags matching a specific commit", action="store_true"
+    )
     args = parser.parse_args()
-
 
     patterns = get_patterns()
     vulnpatterns = patterns["en"]["medium"]["vuln"]
     cryptopatterns = patterns["en"]["medium"]["crypto"]
     cpatterns = patterns["en"]["medium"]["c"]
-
 
     if args.p == "vulnpatterns":
         defaultpattern = vulnpatterns
@@ -62,12 +72,10 @@ def main():
     else:
         repo = git.Repo(args.r)
 
-
     # Initialization of the variables for the results
     found = 0
     all_potential_vulnerabilities = {}
     cve_found = set()
-
 
     repo_heads = repo.heads
     repo_heads_names = [h.name for h in repo_heads]
@@ -85,32 +93,36 @@ def main():
             if isinstance(defaultpattern, typing.Pattern):
                 ret = find_vuln(commit, pattern=defaultpattern, verbose=args.v)
                 if ret:
-                    rcommit = ret['commit']
-                    _, potential_vulnerabilities = summary(repo,
-                                                           rcommit,
-                                                           branch,
-                                                           tagmap,
-                                                           defaultpattern,
-                                                           origin=origin,
-                                                           vuln_match=ret['match'],
-                                                           tags_matching=args.t,
-                                                           commit_state=args.s)
+                    rcommit = ret["commit"]
+                    _, potential_vulnerabilities = summary(
+                        repo,
+                        rcommit,
+                        branch,
+                        tagmap,
+                        defaultpattern,
+                        origin=origin,
+                        vuln_match=ret["match"],
+                        tags_matching=args.t,
+                        commit_state=args.s,
+                    )
                     all_potential_vulnerabilities.update(potential_vulnerabilities)
                     found += 1
             elif isinstance(defaultpattern, list):
                 for p in defaultpattern:
                     ret = find_vuln(commit, pattern=p, verbose=args.v)
                     if ret:
-                        rcommit = ret['commit']
-                        _, potential_vulnerabilities = summary(repo,
-                                                               rcommit,
-                                                               branch,
-                                                               tagmap,
-                                                               p,
-                                                               origin=origin,
-                                                               vuln_match=ret['match'],
-                                                               tags_matching=args.t,
-                                                               commit_state=args.s)
+                        rcommit = ret["commit"]
+                        _, potential_vulnerabilities = summary(
+                            repo,
+                            rcommit,
+                            branch,
+                            tagmap,
+                            p,
+                            origin=origin,
+                            vuln_match=ret["match"],
+                            tags_matching=args.t,
+                            commit_state=args.s,
+                        )
                         all_potential_vulnerabilities.update(potential_vulnerabilities)
                         found += 1
 
@@ -119,5 +131,11 @@ def main():
     elif args.c:
         print(json.dumps(list(cve_found)))
 
-    print("{} CVE referenced found in commit(s)".format(len(list(cve_found))), file=sys.stderr)
-    print("Total potential vulnerability found in {} commit(s)".format(found), file=sys.stderr)
+    print(
+        "{} CVE referenced found in commit(s)".format(len(list(cve_found))),
+        file=sys.stderr,
+    )
+    print(
+        "Total potential vulnerability found in {} commit(s)".format(found),
+        file=sys.stderr,
+    )
