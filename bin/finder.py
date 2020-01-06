@@ -10,13 +10,11 @@
 # Copyright (c) 2019-2020 Alexandre Dulaunoy - a@foo.be
 
 
-import git
 import json
 import sys
 import argparse
-import typing
 
-from git_vuln_finder import get_patterns, find_vuln, summary
+from git_vuln_finder import find, find_vuln, summary
 
 
 def main():
@@ -49,84 +47,18 @@ def main():
     )
     args = parser.parse_args()
 
-    patterns = get_patterns()
-    vulnpatterns = patterns["en"]["medium"]["vuln"]
-    cryptopatterns = patterns["en"]["medium"]["crypto"]
-    cpatterns = patterns["en"]["medium"]["c"]
-
-    if args.p == "vulnpatterns":
-        defaultpattern = vulnpatterns
-    elif args.p == "cryptopatterns":
-        defaultpattern = cryptopatterns
-    elif args.p == "cpatterns":
-        defaultpattern = cpatterns
-    elif args.p == "all":
-        defaultpattern = [vulnpatterns, cryptopatterns, cpatterns]
-    else:
+    if args.p not in ["vulnpatterns", "cryptopatterns", "cpatterns", "all"]:
         parser.print_usage()
         parser.exit()
 
     if not args.r:
         parser.print_usage()
         parser.exit()
-    else:
-        repo = git.Repo(args.r)
 
-    # Initialization of the variables for the results
-    found = 0
-    all_potential_vulnerabilities = {}
-    all_cve_found = set()
-
-    repo_heads = repo.heads
-    repo_heads_names = [h.name for h in repo_heads]
-    print(repo_heads_names, file=sys.stderr)
-    origin = repo.remotes.origin.url
-    tagmap = {}
-    if args.t:
-        for t in repo.tags:
-            tagmap.setdefault(repo.commit(t).hexsha, []).append(str(t))
-
-    for branch in repo_heads_names:
-        commits = list(repo.iter_commits(branch))
-        defaultpattern
-        for commit in commits:
-            if isinstance(defaultpattern, typing.Pattern):
-                ret = find_vuln(commit, pattern=defaultpattern, verbose=args.v)
-                if ret:
-                    rcommit = ret["commit"]
-                    _, potential_vulnerabilities, cve_found = summary(
-                        repo,
-                        rcommit,
-                        branch,
-                        tagmap,
-                        defaultpattern,
-                        origin=origin,
-                        vuln_match=ret["match"],
-                        tags_matching=args.t,
-                        commit_state=args.s,
-                    )
-                    all_potential_vulnerabilities.update(potential_vulnerabilities)
-                    all_cve_found.update(cve_found)
-                    found += 1
-            elif isinstance(defaultpattern, list):
-                for p in defaultpattern:
-                    ret = find_vuln(commit, pattern=p, verbose=args.v)
-                    if ret:
-                        rcommit = ret["commit"]
-                        _, potential_vulnerabilities, cve_found = summary(
-                            repo,
-                            rcommit,
-                            branch,
-                            tagmap,
-                            p,
-                            origin=origin,
-                            vuln_match=ret["match"],
-                            tags_matching=args.t,
-                            commit_state=args.s,
-                        )
-                        all_potential_vulnerabilities.update(potential_vulnerabilities)
-                        all_cve_found.update(cve_found)
-                        found += 1
+    all_potential_vulnerabilities, all_cve_found, found = find(
+        args.r, tags_matching=args.t, commit_state=args.s, verbose=args.v,
+        defaultpattern=args.p
+    )
 
     if not args.c:
         print(json.dumps(all_potential_vulnerabilities))
