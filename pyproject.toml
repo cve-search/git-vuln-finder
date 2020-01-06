@@ -5,7 +5,7 @@ description = "Finding potential software vulnerabilities from git commit messag
 authors = [
     "Alexandre Dulaunoy <a@foo.be>"
 ]
-license = "GPL-3.0-or-later"
+license = "AGPL-3.0-or-later"
 
 readme = "README.md"
 
