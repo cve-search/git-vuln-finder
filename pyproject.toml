@@ -52,7 +52,6 @@ gitpython = "^3.0.5"
 [tool.poetry.dev-dependencies]
 mypy = "^0.750"
 flake8 = "^3.7.9"
-nose2 = "^0.9.1"
 pytest = "^5.3.2"
 
 [build-system]
