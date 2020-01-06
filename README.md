@@ -24,7 +24,7 @@ $ poetry install git-vuln-finder
 $ poetry shell
 ~~~
 
-You can also use ``pip``.
+You can also use ``pip``. Then just import it:
 
 ~~~python
 Python 3.8.0 (default, Dec 11 2019, 21:43:13)
@@ -46,7 +46,7 @@ $ git-vuln-finder --help
 separate virtualenvs to shield them from your system and each other.
 
 
-# Usage
+### Usage
 
 ~~~bash
 usage: git-vuln-finder [-h] [-v] [-r R] [-o O] [-s S] [-p P] [-c] [-t]
