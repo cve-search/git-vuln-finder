@@ -15,7 +15,7 @@ added automatically in the output.
 
 # Installation
 
-## Use in your Python software
+## Use it as a library
 
 ~~~bash
 $ poetry install git-vuln-finder
@@ -33,7 +33,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 ~~~
 
 
-## Use as a command line tool
+## Use it as a command line tool
 
 ~~~bash
 $ pipx install git-vuln-finder
