@@ -19,6 +19,7 @@ dist/*
 .coverage
 .mypy_cache/
 .cache/
+.test_repos/
 
 # sphinx
 docs/_build

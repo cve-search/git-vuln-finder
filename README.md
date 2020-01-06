@@ -2,6 +2,8 @@
 
 ![git-vuln-finder logo](https://raw.githubusercontent.com/cve-search/git-vuln-finder/f22077452c37e110bff0564e1f7b34637dc726c3/doc/logos/git-vuln-finder-small.png)
 
+[![Workflow](https://github.com/cedricbonhomme/git-vuln-finder/workflows/Python%20application/badge.svg?style=flat-square)](https://github.com/cedricbonhomme/git-vuln-finder/actions?query=workflow%3A%22Python+application%22)
+
 Finding potential software vulnerabilities from git commit messages.
 The output format is a JSON with the associated commit which could contain a
 fix regarding a software vulnerability. The search is based on a set of regular
@@ -15,17 +17,25 @@ added automatically in the output.
 
 # Installation
 
-## Use in your Python software
+## Use it as a library
 
 ~~~bash
 $ poetry install git-vuln-finder
 $ poetry shell
 ~~~
 
-You can also use ``pip``.
+You can also use ``pip``. Then just import it:
+
+~~~python
+Python 3.8.0 (default, Dec 11 2019, 21:43:13)
+[GCC 9.2.1 20191008] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from git_vuln_finder import find
+>>> all_potential_vulnerabilities, all_cve_found, found = find("~/git/curl")
+~~~
 
 
-## Use as a command line tool
+## Use it as a command line tool
 
 ~~~bash
 $ pipx install git-vuln-finder
@@ -36,7 +46,7 @@ $ git-vuln-finder --help
 separate virtualenvs to shield them from your system and each other.
 
 
-# Usage
+### Usage
 
 ~~~bash
 usage: git-vuln-finder [-h] [-v] [-r R] [-o O] [-s S] [-p P] [-c] [-t]
