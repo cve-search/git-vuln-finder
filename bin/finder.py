@@ -75,7 +75,7 @@ def main():
     # Initialization of the variables for the results
     found = 0
     all_potential_vulnerabilities = {}
-    cve_found = set()
+    all_cve_found = set()
 
     repo_heads = repo.heads
     repo_heads_names = [h.name for h in repo_heads]
@@ -94,7 +94,7 @@ def main():
                 ret = find_vuln(commit, pattern=defaultpattern, verbose=args.v)
                 if ret:
                     rcommit = ret["commit"]
-                    _, potential_vulnerabilities = summary(
+                    _, potential_vulnerabilities, cve_found = summary(
                         repo,
                         rcommit,
                         branch,
@@ -106,13 +106,14 @@ def main():
                         commit_state=args.s,
                     )
                     all_potential_vulnerabilities.update(potential_vulnerabilities)
+                    all_cve_found.update(cve_found)
                     found += 1
             elif isinstance(defaultpattern, list):
                 for p in defaultpattern:
                     ret = find_vuln(commit, pattern=p, verbose=args.v)
                     if ret:
                         rcommit = ret["commit"]
-                        _, potential_vulnerabilities = summary(
+                        _, potential_vulnerabilities, cve_found = summary(
                             repo,
                             rcommit,
                             branch,
@@ -124,15 +125,16 @@ def main():
                             commit_state=args.s,
                         )
                         all_potential_vulnerabilities.update(potential_vulnerabilities)
+                        all_cve_found.update(cve_found)
                         found += 1
 
     if not args.c:
         print(json.dumps(all_potential_vulnerabilities))
     elif args.c:
-        print(json.dumps(list(cve_found)))
+        print(json.dumps(list(all_cve_found)))
 
     print(
-        "{} CVE referenced found in commit(s)".format(len(list(cve_found))),
+        "{} CVE referenced found in commit(s)".format(len(list(all_cve_found))),
         file=sys.stderr,
     )
     print(
