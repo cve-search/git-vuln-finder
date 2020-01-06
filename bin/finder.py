@@ -56,8 +56,11 @@ def main():
         parser.exit()
 
     all_potential_vulnerabilities, all_cve_found, found = find(
-        args.r, tags_matching=args.t, commit_state=args.s, verbose=args.v,
-        defaultpattern=args.p
+        args.r,
+        tags_matching=args.t,
+        commit_state=args.s,
+        verbose=args.v,
+        defaultpattern=args.p,
     )
 
     if not args.c:

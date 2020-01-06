@@ -37,6 +37,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 ['9069838b30fb3b48af0123e39f664cea683254a5', 'facb0e4662415b5f28163e853dc6742ac5fafb3d',
 ... snap ...
  '8a75dbeb2305297640453029b7905ef51b87e8dd', '1dc43de0dccc2ea7da6dddb7b98f8d7dcf323914', '192c4f788d48f82c03e9cef40013f34370e90737', '2eb8dcf26cb37f09cffe26909a646e702dbcab66', 'fa1ae0abcde5df8d0b3283299e3f246bedf7692c', 'c11c30a8c8d727dcf5634fa0cc6ee0b4b77ddc3d', '75ca568fa1c19de4c5358fed246686de8467c238', 'a20daf90e358c1476a325ea665d533f7a27e3364', '042cc1f69ec0878f542667cb684378869f859911']
+
  >>> print(json.dumps(all_potential_vulnerabilities['9069838b30fb3b48af0123e39f664cea683254a5'], sort_keys=True, indent=4, separators=(",", ": ")))
  {
      "author": "Daniel Stenberg",
@@ -79,8 +80,9 @@ $ pipx install git-vuln-finder
 $ git-vuln-finder --help
 ~~~
 
-``pipx`` installs scripts (system wide available) provided by Python packages into
-separate virtualenvs to shield them from your system and each other.
+You can also use pip.
+``pipx`` installs scripts (system wide available) provided by Python packages
+into separate virtualenvs to shield them from your system and each other.
 
 
 ### Usage
@@ -106,6 +108,7 @@ optional arguments:
 More info: https://github.com/cve-search/git-vuln-finder
 ~~~
 
+
 # Patterns
 
 git-vuln-finder comes with 3 default patterns which can be selected to find the potential vulnerabilities described in the commit messages such as:
@@ -113,6 +116,7 @@ git-vuln-finder comes with 3 default patterns which can be selected to find the 
 - [`vulnpatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/vuln) is a generic vulnerability pattern especially targeting web application and generic security commit message. Based on an academic paper.
 - [`cryptopatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/crypto) is a vulnerability pattern for cryptographic errors mentioned in commit messages.
 - [`cpatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/c) is a set of standard vulnerability patterns see for C/C++-like languages.
+
 
 ## A sample partial output from Curl git repository
 
