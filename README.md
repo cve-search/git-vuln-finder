@@ -32,6 +32,43 @@ Python 3.8.0 (default, Dec 11 2019, 21:43:13)
 Type "help", "copyright", "credits" or "license" for more information.
 >>> from git_vuln_finder import find
 >>> all_potential_vulnerabilities, all_cve_found, found = find("~/git/curl")
+
+>>> [commit for commit, summary in all_potential_vulnerabilities.items() if summary['state'] == 'cve-assigned']
+['9069838b30fb3b48af0123e39f664cea683254a5', 'facb0e4662415b5f28163e853dc6742ac5fafb3d',
+... snap ...
+ '8a75dbeb2305297640453029b7905ef51b87e8dd', '1dc43de0dccc2ea7da6dddb7b98f8d7dcf323914', '192c4f788d48f82c03e9cef40013f34370e90737', '2eb8dcf26cb37f09cffe26909a646e702dbcab66', 'fa1ae0abcde5df8d0b3283299e3f246bedf7692c', 'c11c30a8c8d727dcf5634fa0cc6ee0b4b77ddc3d', '75ca568fa1c19de4c5358fed246686de8467c238', 'a20daf90e358c1476a325ea665d533f7a27e3364', '042cc1f69ec0878f542667cb684378869f859911']
+ >>> print(json.dumps(all_potential_vulnerabilities['9069838b30fb3b48af0123e39f664cea683254a5'], sort_keys=True, indent=4, separators=(",", ": ")))
+ {
+     "author": "Daniel Stenberg",
+     "author-email": "daniel@haxx.se",
+     "authored_date": 1567544372,
+     "branches": [
+         "master"
+     ],
+     "commit-id": "9069838b30fb3b48af0123e39f664cea683254a5",
+     "committed_date": 1568009674,
+     "cve": [
+         "CVE-2019-5481",
+         "CVE-2019-5481"
+     ],
+     "language": "en",
+     "message": "security:read_data fix bad realloc()\n\n... that could end up a double-free\n\nCVE-2019-5481\nBug: https://curl.haxx.se/docs/CVE-2019-5481.html\n",
+     "origin": "https://github.com/curl/curl.git",
+     "origin-github-api": "https://api.github.com/repos///github.com/curl/curl/commits/9069838b30fb3b48af0123e39f664cea683254a5",
+     "pattern-matches": [
+         "double-free"
+     ],
+     "pattern-selected": "(?i)(double[-| ]free|buffer overflow|double free|race[-| ]condition)",
+     "state": "cve-assigned",
+     "stats": {
+         "deletions": 4,
+         "files": 1,
+         "insertions": 2,
+         "lines": 6
+     },
+     "summary": "security:read_data fix bad realloc()",
+     "tags": []
+ }
 ~~~
 
 
@@ -181,21 +218,32 @@ ploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack
   }
 ~~~
 
+
+#Running the tests
+
+~~~bash
+$ pytest
+~~~
+
+
 # License and author(s)
 
 This software is free software and licensed under the AGPL version 3.
 
 Copyright (c) 2019-2020 Alexandre Dulaunoy - https://github.com/adulau/
 
+
 # Acknowledgment
 
 - Thanks to [Jean-Louis Huynen](https://github.com/gallypette) for the discussions about the crypto vulnerability patterns.
 - Thanks to [Sebastien Tricaud](https://github.com/stricaud) for the discussions regarding native language, commit messages and external patterns.
 
+
 # Contributing
 
 We welcome contributions for the software and especially additional vulnerability patterns. Every contributors will be added in the [AUTHORS file](./AUTHORS) and
 collectively own this open source software. The contributors acknowledge the [Developer Certificate of Origin](https://developercertificate.org/).
+
 
 # References
 
