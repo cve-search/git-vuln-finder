@@ -73,8 +73,8 @@ def main():
     repo_heads_names = [h.name for h in repo_heads]
     print(repo_heads_names, file=sys.stderr)
     origin = repo.remotes.origin.url
+    tagmap = {}
     if args.t:
-        tagmap = {}
         for t in repo.tags:
             tagmap.setdefault(repo.commit(t).hexsha, []).append(str(t))
 
@@ -86,8 +86,10 @@ def main():
                 ret = find_vuln(commit, pattern=defaultpattern, verbose=args.v)
                 if ret:
                     rcommit = ret['commit']
-                    _, potential_vulnerabilities = summary(rcommit,
+                    _, potential_vulnerabilities = summary(repo,
+                                                           rcommit,
                                                            branch,
+                                                           tagmap,
                                                            defaultpattern,
                                                            origin=origin,
                                                            vuln_match=ret['match'],
@@ -100,8 +102,10 @@ def main():
                     ret = find_vuln(commit, pattern=p, verbose=args.v)
                     if ret:
                         rcommit = ret['commit']
-                        _, potential_vulnerabilities = summary(rcommit,
+                        _, potential_vulnerabilities = summary(repo,
+                                                               rcommit,
                                                                branch,
+                                                               tagmap,
                                                                p,
                                                                origin=origin,
                                                                vuln_match=ret['match'],
