@@ -55,6 +55,7 @@ def main():
         parser.print_usage()
         parser.exit()
 
+    # Launch the process
     all_potential_vulnerabilities, all_cve_found, found = find(
         args.r,
         tags_matching=args.t,
@@ -63,11 +64,13 @@ def main():
         defaultpattern=args.p,
     )
 
+    # Output the result as json. Can be piped to another software.
     if not args.c:
         print(json.dumps(all_potential_vulnerabilities))
     elif args.c:
         print(json.dumps(list(all_cve_found)))
 
+    # Output the result to stderr.
     print(
         "{} CVE referenced found in commit(s)".format(len(list(all_cve_found))),
         file=sys.stderr,
