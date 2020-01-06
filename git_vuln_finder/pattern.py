@@ -12,6 +12,14 @@
 
 import os
 import re
+from collections import defaultdict
+
+
+def tree():
+    """Autovivification.
+    Call it a tree or call it 'patterns'.
+    """
+    return defaultdict(tree)
 
 
 PATTERNS_PATH = "./git_vuln_finder/patterns"
@@ -43,7 +51,7 @@ def build_pattern(pattern_file):
 
 
 def get_patterns(patterns_path=PATTERNS_PATH):
-    patterns = {}
+    patterns = tree()
     for root, dirs, files in os.walk(patterns_path):
         path = root.split(os.sep)
         for f in files:
@@ -59,18 +67,7 @@ def get_patterns(patterns_path=PATTERNS_PATH):
             severity = npath[1]
             pattern_category = f
 
-            try:  # FIXME: Is there a better way?
-                a = patterns[lang]
-            except KeyError:
-                patterns[lang] = {}
-            try:
-                a = patterns[lang][severity]
-            except KeyError:
-                patterns[lang][severity] = {}
-            try:
-                a = patterns[lang][severity][pattern_category]
-            except KeyError:
-                rex = build_pattern(root + os.sep + f)
-                patterns[lang][severity][pattern_category] = re.compile(rex)
+            rex = build_pattern(root + os.sep + f)
+            patterns[lang][severity][pattern_category] = re.compile(rex)
 
     return patterns
