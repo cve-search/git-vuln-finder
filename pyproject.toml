@@ -24,7 +24,6 @@ keywords = [
 ]
 
 classifiers = [
-    "Development Status :: 4 - Beta Copy",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
