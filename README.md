@@ -2,18 +2,93 @@
 
 ![git-vuln-finder logo](https://raw.githubusercontent.com/cve-search/git-vuln-finder/f22077452c37e110bff0564e1f7b34637dc726c3/doc/logos/git-vuln-finder-small.png)
 
-Finding potential software vulnerabilities from git commit messages. The output format is a JSON with the associated commit which could contain a fix regarding a software vulnerability. The search is based on a set of regular expressions against the commit messages only. If CVE IDs are present, those are added automatically in the output.
+[![Workflow](https://github.com/cedricbonhomme/git-vuln-finder/workflows/Python%20application/badge.svg?style=flat-square)](https://github.com/cedricbonhomme/git-vuln-finder/actions?query=workflow%3A%22Python+application%22)
+
+Finding potential software vulnerabilities from git commit messages.
+The output format is a JSON with the associated commit which could contain a
+fix regarding a software vulnerability. The search is based on a set of regular
+expressions against the commit messages only. If CVE IDs are present, those are
+added automatically in the output.
 
 # Requirements
 
-- Python 3.6
-- GitPython
-- langdetect
+- jq (``sudo apt install jq``)
 
-# Usage
+
+# Installation
+
+## Use it as a library
 
 ~~~bash
-usage: finder.py [-h] [-v] [-r R] [-o O] [-s S] [-p P] [-c] [-t]
+$ poetry install git-vuln-finder
+$ poetry shell
+~~~
+
+You can also use ``pip``. Then just import it:
+
+~~~python
+Python 3.8.0 (default, Dec 11 2019, 21:43:13)
+[GCC 9.2.1 20191008] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from git_vuln_finder import find
+>>> all_potential_vulnerabilities, all_cve_found, found = find("~/git/curl")
+
+>>> [commit for commit, summary in all_potential_vulnerabilities.items() if summary['state'] == 'cve-assigned']
+['9069838b30fb3b48af0123e39f664cea683254a5', 'facb0e4662415b5f28163e853dc6742ac5fafb3d',
+... snap ...
+ '8a75dbeb2305297640453029b7905ef51b87e8dd', '1dc43de0dccc2ea7da6dddb7b98f8d7dcf323914', '192c4f788d48f82c03e9cef40013f34370e90737', '2eb8dcf26cb37f09cffe26909a646e702dbcab66', 'fa1ae0abcde5df8d0b3283299e3f246bedf7692c', 'c11c30a8c8d727dcf5634fa0cc6ee0b4b77ddc3d', '75ca568fa1c19de4c5358fed246686de8467c238', 'a20daf90e358c1476a325ea665d533f7a27e3364', '042cc1f69ec0878f542667cb684378869f859911']
+
+ >>> print(json.dumps(all_potential_vulnerabilities['9069838b30fb3b48af0123e39f664cea683254a5'], sort_keys=True, indent=4, separators=(",", ": ")))
+ {
+     "author": "Daniel Stenberg",
+     "author-email": "daniel@haxx.se",
+     "authored_date": 1567544372,
+     "branches": [
+         "master"
+     ],
+     "commit-id": "9069838b30fb3b48af0123e39f664cea683254a5",
+     "committed_date": 1568009674,
+     "cve": [
+         "CVE-2019-5481",
+         "CVE-2019-5481"
+     ],
+     "language": "en",
+     "message": "security:read_data fix bad realloc()\n\n... that could end up a double-free\n\nCVE-2019-5481\nBug: https://curl.haxx.se/docs/CVE-2019-5481.html\n",
+     "origin": "https://github.com/curl/curl.git",
+     "origin-github-api": "https://api.github.com/repos///github.com/curl/curl/commits/9069838b30fb3b48af0123e39f664cea683254a5",
+     "pattern-matches": [
+         "double-free"
+     ],
+     "pattern-selected": "(?i)(double[-| ]free|buffer overflow|double free|race[-| ]condition)",
+     "state": "cve-assigned",
+     "stats": {
+         "deletions": 4,
+         "files": 1,
+         "insertions": 2,
+         "lines": 6
+     },
+     "summary": "security:read_data fix bad realloc()",
+     "tags": []
+ }
+~~~
+
+
+## Use it as a command line tool
+
+~~~bash
+$ pipx install git-vuln-finder
+$ git-vuln-finder --help
+~~~
+
+You can also use pip.
+``pipx`` installs scripts (system wide available) provided by Python packages
+into separate virtualenvs to shield them from your system and each other.
+
+
+### Usage
+
+~~~bash
+usage: git-vuln-finder [-h] [-v] [-r R] [-o O] [-s S] [-p P] [-c] [-t]
 
 Finding potential software vulnerabilities from git commit messages.
 
@@ -33,6 +108,7 @@ optional arguments:
 More info: https://github.com/cve-search/git-vuln-finder
 ~~~
 
+
 # Patterns
 
 git-vuln-finder comes with 3 default patterns which can be selected to find the potential vulnerabilities described in the commit messages such as:
@@ -41,10 +117,11 @@ git-vuln-finder comes with 3 default patterns which can be selected to find the 
 - [`cryptopatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/crypto) is a vulnerability pattern for cryptographic errors mentioned in commit messages.
 - [`cpatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/c) is a set of standard vulnerability patterns see for C/C++-like languages.
 
+
 ## A sample partial output from Curl git repository
 
 ~~~bash
-python3 finder.py -r /home/adulau/git/curl | jq .
+$ git-vuln-finder -r ~/git/curl | jq .
 ...
  "6df916d751e72fc9a1febc07bb59c4ddd886c043": {
     "message": "loadlibrary: Only load system DLLs from the system directory\n\nInspiration provided by: Daniel Stenberg and Ray Satiro\n\nBug: https://curl.haxx.se/docs/adv_20160530.html\n\nRef: Windows DLL hijacking with curl, CVE-2016-4802\n",
@@ -145,26 +222,35 @@ ploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack
   }
 ~~~
 
+
+# Running the tests
+
+~~~bash
+$ pytest
+~~~
+
+
 # License and author(s)
 
 This software is free software and licensed under the AGPL version 3.
 
-Copyright (c) 2019 Alexandre Dulaunoy - https://github.com/adulau/
+Copyright (c) 2019-2020 Alexandre Dulaunoy - https://github.com/adulau/
+
 
 # Acknowledgment
 
 - Thanks to [Jean-Louis Huynen](https://github.com/gallypette) for the discussions about the crypto vulnerability patterns.
 - Thanks to [Sebastien Tricaud](https://github.com/stricaud) for the discussions regarding native language, commit messages and external patterns.
 
+
 # Contributing
 
 We welcome contributions for the software and especially additional vulnerability patterns. Every contributors will be added in the [AUTHORS file](./AUTHORS) and
 collectively own this open source software. The contributors acknowledge the [Developer Certificate of Origin](https://developercertificate.org/).
+
 
 # References
 
 - [Notes](https://gist.github.com/adulau/dce5a6ca5c65017869bb01dfee576303#file-finding-vuln-git-commit-messages-md)
 - https://csce.ucmss.com/cr/books/2017/LFS/CSREA2017/ICA2077.pdf (mainly using CVE referenced in the commit message) - archive (http://archive.is/xep9o)
 - https://asankhaya.github.io/pdf/automated-identification-of-security-issues-from-commit-messages-and-bug-reports.pdf (2 main regexps)
-
-

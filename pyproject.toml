@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "git-vuln-finder"
+version = "1.0.0"
+description = "Finding potential software vulnerabilities from git commit messages."
+authors = [
+    "Alexandre Dulaunoy <a@foo.be>"
+]
+license = "AGPL-3.0-or-later"
+
+readme = "README.md"
+
+homepage = "https://github.com/cve-search/git-vuln-finder"
+repository = "https://github.com/cve-search/git-vuln-finder"
+documentation = ""
+
+keywords = [
+    "git",
+    "cve",
+    "scanner",
+    "cve-search",
+    "cve-scanning",
+    "software-vulnerability",
+    "software-vulnerabilities"
+]
+
+classifiers = [
+    "Development Status :: 4 - Beta Copy",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "Topic :: Security",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)"
+]
+
+include = [
+    "AUTHORS",
+    "COPYING",
+    "bin/*"
+]
+
+[tool.poetry.scripts]
+git-vuln-finder = "bin.finder:main"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+langdetect = "^1.0.7"
+gitpython = "^3.0.5"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.7.9"
+pytest = "^5.3.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
