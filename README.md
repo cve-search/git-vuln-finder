@@ -2,7 +2,7 @@
 
 ![git-vuln-finder logo](https://raw.githubusercontent.com/cve-search/git-vuln-finder/f22077452c37e110bff0564e1f7b34637dc726c3/doc/logos/git-vuln-finder-small.png)
 
-[![Workflow](https://github.com/cve-search/git-vuln-finder/workflows/Python%20application/badge.svg?style=flat-square)](https://github.com/cve-search/git-vuln-finder/actions?query=workflow%3A%22Python+application%22)
+[![Workflow](https://github.com/cve-search/git-vuln-finder/workflows/Python%20application/badge.svg)](https://github.com/cve-search/git-vuln-finder/actions?query=workflow%3A%22Python+application%22)
 
 Finding potential software vulnerabilities from git commit messages.
 The output format is a JSON with the associated commit which could contain a
