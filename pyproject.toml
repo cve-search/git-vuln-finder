@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "git-vuln-finder"
-version = "1.0.0"
+version = "1.1"
 description = "Finding potential software vulnerabilities from git commit messages."
 authors = [
     "Alexandre Dulaunoy <a@foo.be>"
