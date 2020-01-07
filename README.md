@@ -2,7 +2,7 @@
 
 ![git-vuln-finder logo](https://raw.githubusercontent.com/cve-search/git-vuln-finder/f22077452c37e110bff0564e1f7b34637dc726c3/doc/logos/git-vuln-finder-small.png)
 
-[![Workflow](https://github.com/cedricbonhomme/git-vuln-finder/workflows/Python%20application/badge.svg?style=flat-square)](https://github.com/cedricbonhomme/git-vuln-finder/actions?query=workflow%3A%22Python+application%22)
+[![Workflow](https://github.com/cve-search/git-vuln-finder/workflows/Python%20application/badge.svg?style=flat-square)](https://github.com/cve-search/git-vuln-finder/actions?query=workflow%3A%22Python+application%22)
 
 Finding potential software vulnerabilities from git commit messages.
 The output format is a JSON with the associated commit which could contain a
@@ -18,6 +18,8 @@ added automatically in the output.
 # Installation
 
 ## Use it as a library
+
+git-vuln-finder can be install with poetry. If you don't have poetry installed, you can do the following `curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python`.
 
 ~~~bash
 $ poetry install git-vuln-finder
@@ -241,6 +243,7 @@ Copyright (c) 2019-2020 Alexandre Dulaunoy - https://github.com/adulau/
 
 - Thanks to [Jean-Louis Huynen](https://github.com/gallypette) for the discussions about the crypto vulnerability patterns.
 - Thanks to [Sebastien Tricaud](https://github.com/stricaud) for the discussions regarding native language, commit messages and external patterns.
+- Thanks to [Cedric Bonhomme](https://github.com/cedricbonhomme) to make git-vuln-finder a Python library, add tests and improve the overall installation process.
 
 
 # Contributing
