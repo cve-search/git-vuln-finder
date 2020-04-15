@@ -22,8 +22,9 @@ added automatically in the output.
 git-vuln-finder can be install with poetry. If you don't have poetry installed, you can do the following `curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python`.
 
 ~~~bash
-$ poetry install git-vuln-finder
+$ poetry install
 $ poetry shell
+$ git-vuln-finder -h
 ~~~
 
 You can also use ``pip``. Then just import it:
