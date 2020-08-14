@@ -1,0 +1,56 @@
+{
+  "ad0961874ee22098ecacab5f26942e3a23e38e11": {
+    "message": "Merge pull request #1 from wllm-rbnt/csloop\n\nFix for infinite loop in Ciphers Suite decoding",
+    "language": "en",
+    "commit-id": "ad0961874ee22098ecacab5f26942e3a23e38e11",
+    "summary": "Merge pull request #1 from wllm-rbnt/csloop",
+    "stats": {
+      "insertions": 7,
+      "deletions": 1,
+      "lines": 8,
+      "files": 1
+    },
+    "author": "Alexandre Dulaunoy",
+    "author-email": "a@foo.be",
+    "authored_date": 1427835868,
+    "committed_date": 1427835868,
+    "branches": [
+      "master"
+    ],
+    "pattern-selected": "(?i)(denial of service|\\bXXE\\b|remote code execution|\\bopen redirect|OSVDB|\\bvuln|\\bCVE\\b|\\bXSS\\b|\\bReDoS\\b|\\bNVD\\b|malicious|x−frame−options|attack|cross site|exploit|malicious|directory traversal|\\bRCE\\b|\\bdos\\b|\\bXSRF \\b|\\bXSS\\b|clickjack|session.fixation|hijack|\\badvisory|\\binsecure|security|\\bcross−origin\\b|unauthori[z|s]ed|infinite loop)",
+    "pattern-matches": [
+      "infinite loop"
+    ],
+    "origin": "git@github.com:adulau/ssldump.git",
+    "origin-github-api": "https://api.github.com/repos/adulau/ssldump/commits/ad0961874ee22098ecacab5f26942e3a23e38e11",
+    "tags": [],
+    "state": "under-review"
+  },
+  "082cc7afed8a226a21427522a575d929ea2e98c3": {
+    "message": "Fix for infinite loop in Ciphers Suite decoding\n",
+    "language": "en",
+    "commit-id": "082cc7afed8a226a21427522a575d929ea2e98c3",
+    "summary": "Fix for infinite loop in Ciphers Suite decoding",
+    "stats": {
+      "insertions": 7,
+      "deletions": 1,
+      "lines": 8,
+      "files": 1
+    },
+    "author": "William Robinet",
+    "author-email": "william.robinet@conostix.com",
+    "authored_date": 1427291551,
+    "committed_date": 1427291551,
+    "branches": [
+      "master"
+    ],
+    "pattern-selected": "(?i)(denial of service|\\bXXE\\b|remote code execution|\\bopen redirect|OSVDB|\\bvuln|\\bCVE\\b|\\bXSS\\b|\\bReDoS\\b|\\bNVD\\b|malicious|x−frame−options|attack|cross site|exploit|malicious|directory traversal|\\bRCE\\b|\\bdos\\b|\\bXSRF \\b|\\bXSS\\b|clickjack|session.fixation|hijack|\\badvisory|\\binsecure|security|\\bcross−origin\\b|unauthori[z|s]ed|infinite loop)",
+    "pattern-matches": [
+      "infinite loop"
+    ],
+    "origin": "git@github.com:adulau/ssldump.git",
+    "origin-github-api": "https://api.github.com/repos/adulau/ssldump/commits/082cc7afed8a226a21427522a575d929ea2e98c3",
+    "tags": [],
+    "state": "under-review"
+  }
+}
