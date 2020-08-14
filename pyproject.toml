@@ -49,6 +49,7 @@ git-vuln-finder = "bin.finder:main"
 python = "^3.6"
 langdetect = "^1.0.7"
 gitpython = "^3.0.5"
+pymisp = "^2.4.128"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7.9"
