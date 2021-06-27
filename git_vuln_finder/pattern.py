@@ -22,7 +22,7 @@ def tree():
     return defaultdict(tree)
 
 
-PATTERNS_PATH = "./git_vuln_finder/patterns"
+PATTERNS_PATH = os.path.dirname(os.path.abspath(__file__)) + "/patterns"
 
 
 def build_pattern(pattern_file):
