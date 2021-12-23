@@ -79,7 +79,9 @@ Type "help", "copyright", "credits" or "license" for more information.
 ## Use it as a command line tool
 
 ~~~bash
-$ pip install git-vuln-finder
+$ git clone https://github.com/cve-search/git-vuln-finder.git
+$ cd https://github.com/cve-search/git-vuln-finder.git
+$ pip install .
 $ git-vuln-finder --help
 ~~~
 
