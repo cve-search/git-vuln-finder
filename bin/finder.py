@@ -14,7 +14,7 @@ import json
 import sys
 import argparse
 
-from git_vuln_finder import find, find_vuln, summary
+from git_vuln_finder import find, find_event
 
 
 def main():
@@ -45,24 +45,36 @@ def main():
     parser.add_argument(
         "-t", help="Include tags matching a specific commit", action="store_true"
     )
+    parser.add_argument(
+        "-gh", help="special option for gharchive, pass a file containing a PushEvent in JSON format"
+    )
     args = parser.parse_args()
 
     if args.p not in ["vulnpatterns", "cryptopatterns", "cpatterns", "all"]:
         parser.print_usage()
         parser.exit()
 
-    if not args.r:
+    if not args.r and not args.gh:
         parser.print_usage()
         parser.exit()
 
-    # Launch the process
-    all_potential_vulnerabilities, all_cve_found, found = find(
-        args.r,
-        tags_matching=args.t,
-        commit_state=args.s,
-        verbose=args.v,
-        defaultpattern=args.p,
-    )
+    if args.gh:
+        with open(args.gh, "r") as read_file:
+            event = json.load(read_file)
+
+        for element in event:
+            for i in range(0,len(element["payload"]["commits"])):
+                all_potential_vulnerabilities, all_cve_found, found = find_event(element["payload"]["commits"][i], element)
+
+    else:
+        # Launch the process
+        all_potential_vulnerabilities, all_cve_found, found = find(
+            args.r,
+            tags_matching=args.t,
+            commit_state=args.s,
+            verbose=args.v,
+            defaultpattern=args.p,
+        )
 
     # Output the result as json. Can be piped to another software.
     if not args.c:

@@ -12,7 +12,7 @@
 import sys
 import git
 import typing
-from git_vuln_finder import get_patterns, find_vuln, summary
+from git_vuln_finder import get_patterns, find_vuln, find_vuln_event, summary, summary_event
 
 
 def find(
@@ -95,3 +95,32 @@ def find(
                         found += 1
 
         return all_potential_vulnerabilities, all_cve_found, found
+
+def find_event(commit, element):
+    # Initialization of the variables for the results
+    found = 0
+    all_potential_vulnerabilities = {}
+    all_cve_found = set()
+
+    # Initialization of the patterns
+    patterns = get_patterns()
+    vulnpatterns = patterns["en"]["medium"]["vuln"]
+    cryptopatterns = patterns["en"]["medium"]["crypto"]
+    cpatterns = patterns["en"]["medium"]["c"]
+
+    defaultpattern = [vulnpatterns, cryptopatterns, cpatterns]
+    
+    for p in defaultpattern:
+        ret = find_vuln_event(commit["message"], pattern=p)
+        if ret:
+            potential_vulnerabilities, cve_found = summary_event(
+                commit,
+                p,
+                element,
+                vuln_match=ret["match"]
+            )
+            all_potential_vulnerabilities.update(potential_vulnerabilities)
+            all_cve_found.update(cve_found)
+            found += 1
+
+    return all_potential_vulnerabilities, all_cve_found, found
