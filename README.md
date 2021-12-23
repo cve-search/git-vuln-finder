@@ -79,7 +79,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 ## Use it as a command line tool
 
 ~~~bash
-$ pipx install git-vuln-finder
+$ pip install git-vuln-finder
 $ git-vuln-finder --help
 ~~~
 
