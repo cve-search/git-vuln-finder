@@ -226,6 +226,90 @@ ploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack
 ~~~
 
 
+
+## Usage for the special gharchive option
+
+~~~bash
+$ git-vuln-finder -gh ../tests/gharchive_test.json
+~~~
+
+
+
+the value for the `gh` parameters need to be a json file, containing an array of each PushEvent you want to test.
+
+~~~json
+[
+   {
+    "id": "19351512310",
+    "type": "PushEvent",
+    "actor": {
+      "id": 32466128,
+      "login": "DavidCruciani",
+      "display_login": "DavidCruciani",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/DavidCruciani",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32466128?"
+    },
+    "repo": {
+      "id": 424660123,
+      "name": "ail-project/ail-feeder-gharchive",
+      "url": "https://api.github.com/repos/ail-project/ail-feeder-gharchive"
+    },
+    "payload": {
+      "push_id": 8628652926,
+      "size": 1,
+      "distinct_size": 1,
+      "ref": "refs/heads/main",
+      "head": "910ed71a2819546a3f3bcce1ebb9e3984a8c8d86",
+      "before": "40a9ef5dc6b2add5184a0a58401bfe9058faa8df",
+      "commits": [
+        {
+          "sha": "910ed71a2819546a3f3bcce1ebb9e3984a8c8d86",
+          "author": {
+            "email": "da.cruciani@laposte.net",
+            "name": "David Cruciani"
+          },
+          "message": "chg: [feeder] case sensitive",
+          "distinct": true,
+          "url": "https://api.github.com/repos/ail-project/ail-feeder-gharchive/commits/910ed71a2819546a3f3bcce1ebb9e3984a8c8d86"
+        }
+      ]
+    },
+    "public": true,
+    "created_at": "2021-12-15T16:06:43Z",
+    "org": {
+      "id": 62389074,
+      "login": "ail-project",
+      "gravatar_id": "",
+      "url": "https://api.github.com/orgs/ail-project",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62389074?"
+    }
+  }
+]
+~~~
+
+
+
+## Usage for import 
+
+If the goal is to import the module to use it, the method to call is `find_event`
+
+~~~python
+from git_vuln_finder import find_event
+
+for element in event:
+    for i in range(0,len(element["payload"]["commits"])):
+        all_potential_vulnerabilities, all_cve_found, found = find_event(element["payload"]["commits"][i], element)
+~~~
+
+
+
+## Output with gharchive option
+
+
+
+
+
 # Running the tests
 
 ~~~bash
