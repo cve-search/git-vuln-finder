@@ -342,14 +342,15 @@ $ pytest
 
 This software is free software and licensed under the AGPL version 3.
 
-Copyright (c) 2019-2020 Alexandre Dulaunoy - https://github.com/adulau/
-
+Copyright (c) 2019-2021 Alexandre Dulaunoy - https://github.com/adulau/
+Copyright (c) 2019-2021 All contributors to the project
 
 # Acknowledgment
 
 - Thanks to [Jean-Louis Huynen](https://github.com/gallypette) for the discussions about the crypto vulnerability patterns.
 - Thanks to [Sebastien Tricaud](https://github.com/stricaud) for the discussions regarding native language, commit messages and external patterns.
 - Thanks to [Cedric Bonhomme](https://github.com/cedricbonhomme) to make git-vuln-finder a Python library, add tests and improve the overall installation process.
+- Thanks to [David Cruciani](https://github.com/DavidCruciani) for the support of [gharchive](https://www.gharchive.org/).
 
 
 # Contributing
