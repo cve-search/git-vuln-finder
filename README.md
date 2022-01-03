@@ -93,7 +93,7 @@ into separate virtualenvs to shield them from your system and each other.
 ### Usage
 
 ~~~bash
-usage: git-vuln-finder [-h] [-v] [-r R] [-o O] [-s S] [-p P] [-c] [-t]
+usage: git-vuln-finder [-h] [-v] [-r R] [-o O] [-s S] [-p P] [-c] [-t] [-gh GH]
 
 Finding potential software vulnerabilities from git commit messages.
 
@@ -103,12 +103,10 @@ optional arguments:
   -r R        git repository to analyse
   -o O        Output format: [json]
   -s S        State of the commit found
-  -p P        Matching pattern to use: [vulnpatterns, cryptopatterns,
-              cpatterns] - the pattern 'all' is used to match all the patterns
-              at once.
-  -c          output only a list of the CVE pattern found in commit messages
-              (disable by default)
+  -p P        Matching pattern to use: [vulnpatterns, cryptopatterns, cpatterns] - the pattern 'all' is used to match all the patterns at once.
+  -c          output only a list of the CVE pattern found in commit messages (disable by default)
   -t          Include tags matching a specific commit
+  -gh GH      special option for gharchive, pass a file containing a PushEvent in JSON format
 
 More info: https://github.com/cve-search/git-vuln-finder
 ~~~
