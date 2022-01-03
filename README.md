@@ -228,6 +228,109 @@ ploit|malicious|directory traversal |\bRCE\b|\bdos\b|\bXSRF \b|\bXSS\b|clickjack
 ~~~
 
 
+
+## Usage for the special gharchive option
+
+~~~bash
+$ git-vuln-finder -gh ../tests/gharchive_test.json
+~~~
+
+
+
+the value for the `gh` parameters need to be a json file, containing an array of each PushEvent you want to test.
+
+~~~json
+[
+   {
+    "id": "19351512310",
+    "type": "PushEvent",
+    "actor": {
+      "id": 32466128,
+      "login": "DavidCruciani",
+      "display_login": "DavidCruciani",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/DavidCruciani",
+      "avatar_url": "https://avatars.githubusercontent.com/u/32466128?"
+    },
+    "repo": {
+      "id": 424660123,
+      "name": "ail-project/ail-feeder-gharchive",
+      "url": "https://api.github.com/repos/ail-project/ail-feeder-gharchive"
+    },
+    "payload": {
+      "push_id": 8628652926,
+      "size": 1,
+      "distinct_size": 1,
+      "ref": "refs/heads/main",
+      "head": "910ed71a2819546a3f3bcce1ebb9e3984a8c8d86",
+      "before": "40a9ef5dc6b2add5184a0a58401bfe9058faa8df",
+      "commits": [
+        {
+          "sha": "910ed71a2819546a3f3bcce1ebb9e3984a8c8d86",
+          "author": {
+            "email": "da.cruciani@laposte.net",
+            "name": "David Cruciani"
+          },
+          "message": "chg: [feeder] case sensitive",
+          "distinct": true,
+          "url": "https://api.github.com/repos/ail-project/ail-feeder-gharchive/commits/910ed71a2819546a3f3bcce1ebb9e3984a8c8d86"
+        }
+      ]
+    },
+    "public": true,
+    "created_at": "2021-12-15T16:06:43Z",
+    "org": {
+      "id": 62389074,
+      "login": "ail-project",
+      "gravatar_id": "",
+      "url": "https://api.github.com/orgs/ail-project",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62389074?"
+    }
+  }
+]
+~~~
+
+
+
+## Usage for import 
+
+If the goal is to import the module to use it, the method to call is `find_event`
+
+~~~python
+from git_vuln_finder import find_event
+
+for element in event:
+    for i in range(0,len(element["payload"]["commits"])):
+        all_potential_vulnerabilities, all_cve_found, found = find_event(element["payload"]["commits"][i], element)
+~~~
+
+
+
+## Output with gharchive option
+
+~~~json
+{
+    "repo_name": "LeandroFChaves/gerenciador-alunos",
+    "message": "[UI] - Ajustes no css da aplica\u00e7\u00e3o\n\n- Adicionado padding para a exibi\u00e7\u00e3o do conte\u00fado das p\u00e1ginas;\n- Alinhado os bot\u00f5es de a\u00e7\u00f5es dos forms a direita da table",
+    "language": "pt",
+    "commit-id": "73a1c68b520853198eaac199a41d141ee96dc64d",
+    "author": "LeandroFChaves",
+    "author-email": "bbf3d4347c6affed0d9692115680849e2ace4d62@gmail.com",
+    "authored_date": "2021-10-01T03:00:07Z",
+    "branches": "refs/heads/master",
+    "pattern-selected": "(?i)(denial of service|\\bXXE\\b|remote code execution|\\bopen redirect|OSVDB|\\bvuln|\\bCVE\\b|\\bXSS\\b|\\bReDoS\\b|\\bNVD\\b|malicious|x\u2212frame\u2212options|attack|cross site|exploit|malicious|directory traversal|\\bRCE\\b|\\bdos\\b|\\bXSRF \\b|\\bXSS\\b|clickjack|session.fixation|hijack|\\badvisory|\\binsecure|security|\\bcross\u2212origin\\b|unauthori[z|s]ed|infinite loop)",
+    "pattern-matches": [
+        "dos"
+    ],
+    "origin-github-api": "https://api.github.com/repos/LeandroFChaves/gerenciador-alunos/commits/73a1c68b520853198eaac199a41d141ee96dc64d",
+    "state": "under-review"
+}
+~~~
+
+
+
+
+
 # Running the tests
 
 ~~~bash
