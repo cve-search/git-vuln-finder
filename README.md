@@ -116,9 +116,9 @@ More info: https://github.com/cve-search/git-vuln-finder
 
 git-vuln-finder comes with 3 default patterns which can be selected to find the potential vulnerabilities described in the commit messages such as:
 
-- [`vulnpatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/vuln) is a generic vulnerability pattern especially targeting web application and generic security commit message. Based on an academic paper.
-- [`cryptopatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/crypto) is a vulnerability pattern for cryptographic errors mentioned in commit messages.
-- [`cpatterns`](https://github.com/cve-search/git-vuln-finder/blob/master/patterns/en/medium/c) is a set of standard vulnerability patterns see for C/C++-like languages.
+- [`vulnpatterns`](git_vuln_finder/patterns/en/medium/vuln) is a generic vulnerability pattern especially targeting web application and generic security commit message. Based on an academic paper.
+- [`cryptopatterns`](git_vuln_finder/patterns/en/medium/crypto) is a vulnerability pattern for cryptographic errors mentioned in commit messages.
+- [`cpatterns`](git_vuln_finder/patterns/en/medium/c) is a set of standard vulnerability patterns see for C/C++-like languages.
 
 
 ## A sample partial output from Curl git repository
