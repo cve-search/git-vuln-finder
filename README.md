@@ -8,7 +8,8 @@ Finding potential software vulnerabilities from git commit messages.
 The output format is a JSON with the associated commit which could contain a
 fix regarding a software vulnerability. The search is based on a set of regular
 expressions against the commit messages only. If CVE IDs are present, those are
-added automatically in the output.
+added automatically in the output. The input can be any git repositories or
+a [GH archive source](https://www.gharchive.org/).
 
 # Requirements
 
@@ -340,8 +341,8 @@ $ pytest
 
 This software is free software and licensed under the AGPL version 3.
 
-Copyright (c) 2019-2021 Alexandre Dulaunoy - https://github.com/adulau/
-Copyright (c) 2019-2021 All contributors to the project
+- Copyright (c) 2019-2021 Alexandre Dulaunoy - https://github.com/adulau/
+- Copyright (c) 2019-2021 All contributors to the project
 
 # Acknowledgment
 
