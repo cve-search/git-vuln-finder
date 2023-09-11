@@ -13,7 +13,7 @@ added automatically in the output.
 # Requirements
 
 - jq (``sudo apt install jq``)
-
+- Python poetry
 
 # Installation
 
@@ -335,13 +335,16 @@ for element in event:
 $ pytest
 ~~~
 
+# Warning
+
+git-vuln-finder is an automatic tool that detects potential vulnerabilities in commit messages based on specific keywords. If you intend to use the discovered vulnerability information, such as CVEs registration, please review the discovered vulnerabilities with the authors of the software before proceeding.
 
 # License and author(s)
 
 This software is free software and licensed under the AGPL version 3.
 
-Copyright (c) 2019-2021 Alexandre Dulaunoy - https://github.com/adulau/
-Copyright (c) 2019-2021 All contributors to the project
+Copyright (c) 2019-2023 Alexandre Dulaunoy - https://github.com/adulau/
+Copyright (c) 2019-2023 All contributors to the project
 
 # Acknowledgment
 
