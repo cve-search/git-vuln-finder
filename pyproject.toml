@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "git-vuln-finder"
-version = "1.2"
+version = "1.4"
 description = "Finding potential software vulnerabilities from git commit messages."
 authors = [
     "Alexandre Dulaunoy <a@foo.be>"
@@ -33,6 +33,7 @@ classifiers = [
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.10",
     "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)"
 ]
 
