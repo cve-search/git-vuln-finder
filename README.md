@@ -344,8 +344,8 @@ git-vuln-finder is an automatic tool that detects potential vulnerabilities in c
 
 This software is free software and licensed under the AGPL version 3.
 
-Copyright (c) 2019-2023 Alexandre Dulaunoy - https://github.com/adulau/
-Copyright (c) 2019-2023 All contributors to the project
+- Copyright (c) 2019-2023 Alexandre Dulaunoy - https://github.com/adulau/
+- Copyright (c) 2019-2023 All contributors to the project
 
 # Acknowledgment
 
